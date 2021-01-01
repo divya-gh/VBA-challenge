@@ -11,7 +11,7 @@ Sub RunThroughOneYearStock()
   Dim i As Long
   Dim j As Integer
   
-  
+  ''-----------------------------------------''
   'Print the headers on cloumns I, J, K and L '
   ''-----------------------------------------''
   Range("I1").Value = "Ticker"
@@ -19,9 +19,11 @@ Sub RunThroughOneYearStock()
   Range("K1").Value = "Percent Change"
   Range("L1").Value = "Total Stock Volume"
   
+  
   'Find the last Row of the sheet'
   lastrow = ActiveSheet.UsedRange.SpecialCells(xlCellTypeLastCell).Row
   'MsgBox lastrow
+  
   
   'Initialize the variables'
   ticker = ""
@@ -80,10 +82,11 @@ Sub RunThroughOneYearStock()
       End If
       
    Next i
+   
       
-  
+  ''--------------------------------------------------------------------------------------''
   'Conditional formatting to highlight positive change in Green and Negetice change in Red'
-  '----------------------------------------------------------------------------------------'
+  ''---------------------------------------------------------------------------------------''
   Dim lrow As Long
   
   lrow = Cells(Rows.Count, 10).End(xlUp).Row  'Find the last row in column I'
@@ -97,6 +100,8 @@ Sub RunThroughOneYearStock()
     End If
     
   Next i
+  
+  
   
   ''---------------------------------------------------''
   ''Bonus Question ''
@@ -126,8 +131,17 @@ Sub RunThroughOneYearStock()
  GreatIncrease = Format(GreatIncrease, "0.00%")
  GreatDecrease = Format(GreatDecrease, "0.00%")
  
- MsgBox GreatIncrease
- MsgBox GreatDecrease
+ 'MsgBox GreatIncrease
+ 'MsgBox GreatDecrease
  
+ 
+ ''--------------------------------''
+ 'Print lables on worksheet'
+ ''------------------------------''
+ Cells(2, 15).Value = "Greatest % increase"
+ Cells(3, 15).Value = "Greatest % decrease"
+ Cells(4, 15).Value = "Greatest total volume"
+ Cells(1, 16).Value = "Ticker"
+ Cells(1, 17).Value = "Value"
  
 End Sub
