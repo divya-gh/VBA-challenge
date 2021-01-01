@@ -45,7 +45,16 @@ Sub RunThroughOneYearStock()
         'Print the values for yearly change for previous ticker in the row (j-1) and column I'
         If i > 2 Then
            Cells(j - 1, 10).Value = (Closeprice - Openprice)
-           Percentage = ((Closeprice / Openprice) - 1) * 100
+           
+           'To avoid overflow error, make sure close price is not devided by a 0'
+           'calculat percentage'
+           If Openprice <> 0 Then
+              Percentage = ((Closeprice / Openprice) - 1) * 100
+              
+           Else
+              Percentage = 0
+            
+          End If
         
            'Print percentage and total Volume in the column K and row j-1'
            'Format the percentage to have 2 decimals with symbol'
@@ -73,7 +82,20 @@ Sub RunThroughOneYearStock()
    Next i
       
   
+  'Conditional formatting to highlight positive change in Green and Negetice change in Red'
+  '----------------------------------------------------------------------------------------'
+  Dim lrow As Long
   
+  lrow = Cells(Rows.Count, 10).End(xlUp).Row
   
+  For i = 2 To lrow
+    'find if value is < 0 '
+    If (Cells(i, 10).Value < 0) Then
+        Cells(i, 10).Interior.Color = RGB(255, 0, 0)
+    Else
+        Cells(i, 10).Interior.Color = RGB(0, 255, 0)
+    End If
+    
+  Next i
 
 End Sub
