@@ -1,5 +1,9 @@
 Attribute VB_Name = "Module1"
-
+'Create a sub function to loop through the ticker and calculate its corresponding yearly change , percent change and Total stock volume'
+'Calculations used :- 1. yearly change = closeprice -Openprice'
+                    '2. Percent change = (closeprice-openprice)/openprice )* 100'
+                    '3. Total volume = sum of volumes for individual tickers'
+                    
 Sub RunThroughOneYearStock()
 'Delare the required variables'
   Dim ticker As String
@@ -49,7 +53,7 @@ Sub RunThroughOneYearStock()
            Cells(j - 1, 10).Value = (Closeprice - Openprice)
            
            'To avoid overflow error, make sure close price is not devided by a 0'
-           'calculate the percentage'
+           'Calculate the percentage'
            If Openprice <> 0 Then
               Percentage = ((Closeprice / Openprice) - 1)
               
@@ -87,6 +91,7 @@ Sub RunThroughOneYearStock()
   ''--------------------------------------------------------------------------------------''
   'Conditional formatting to highlight positive change in Green and Negetice change in Red'
   ''---------------------------------------------------------------------------------------''
+  
   Dim lrow As Long
   
   lrow = Cells(Rows.Count, 10).End(xlUp).Row  'Find the last row in column I'
@@ -131,7 +136,9 @@ Sub RunThroughOneYearStock()
     End If
   
   Next cell
-'print to check greatest and smallest value'
+  
+'Format to 2 decimals and print to check greatest and smallest value'
+'--------------------------------'
  GreatIncrease = Format(GreatIncrease, "0.00%")
  GreatDecrease = Format(GreatDecrease, "0.00%")
  
@@ -150,7 +157,7 @@ Sub RunThroughOneYearStock()
  
 
  'call function to calculate greatest total stock volume'
- '-------------'
+ '----------------------------------'
  GreatTotalVolume = GetTotalVolume(lrow)
  'MsgBox GreatTotalVolume'
 
@@ -167,6 +174,7 @@ Sub RunThroughOneYearStock()
 
  'Autofit text on column 'O' '
  'reference :- from https://www.automateexcel.com/vba/autofit-columns-rows/'
+ '---------------------------'
     
   Columns("O").EntireColumn.AutoFit
  
@@ -183,15 +191,18 @@ Private Function GetTotalVolume(lrow) As Variant
   Totalvolume = Cells(2, 12).Value
     
   For i = 3 To lrow
-    If Cells(i, 12).Value > Totalvolume Then
+    If Cells(i, 12).Value > Totalvolume Then     'If condition is met, then pass the greater value to Totalvolume'
        Totalvolume = Cells(i, 12).Value
-       TickerTotalVolume = Cells(i, 12).Offset(, 3).Value
+       TickerTotalVolume = Cells(i, 12).Offset(, -3).Value  'Pass its ticker name to TickerTotalVolume variable'
     End If
        
   Next i
   
+  'Get values to return to main sub and print its ticker name on worksheet'
+  ''------------------------------''
   GetTotalVolume = Totalvolume
   Range("P4").Value = TickerTotalVolume
+  'MsgBox TickerTotalVolume
       
 End Function
 
