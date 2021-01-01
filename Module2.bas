@@ -109,7 +109,9 @@ Sub RunThroughOneYearStock()
   
   Dim GreatIncrease As Variant
   Dim GreatDecrease As Variant
-  Dim GreatTotalVolume As Long
+  Dim GreatTotalVolume As Variant
+  Dim TickerIncrease As String
+  Dim TickerDecrease As String
   
   'Assign first value to compare '
   GreatIncrease = Cells(2, 11).Value
@@ -120,9 +122,11 @@ Sub RunThroughOneYearStock()
     If (cell.Value > GreatIncrease) Then
        
        GreatIncrease = cell.Value
+       TickerIncrease = cell.Offset(, -2).Value
        
     ElseIf (cell.Value < GreatDecrease) Then
        GreatDecrease = cell.Value
+       TickerDecrease = cell.Offset(, -2).Value
        
     End If
   
@@ -144,13 +148,27 @@ Sub RunThroughOneYearStock()
  Cells(1, 16).Value = "Ticker"
  Cells(1, 17).Value = "Value"
  
+
+ 'call function to calculate greatest total stock volume'
+ '-------------'
+ GreatTotalVolume = GetTotalVolume(lrow)
+ 'MsgBox GreatTotalVolume'
+
+
+ ''------------------------------------------------------''
+ 'Print Great%Increase , Great%Decrease and GreatTotalVolume on worksheet'
+ ''------------------------------------------------------''
+  Range("P2").Value = TickerIncrease
+  Range("P3").Value = TickerDecrease
+  Range("Q2").Value = GreatIncrease
+  Range("Q3").Value = GreatDecrease
+  Range("Q4").Value = GreatTotalVolume
+
+
  'Autofit text on column 'O' '
  'reference :- from https://www.automateexcel.com/vba/autofit-columns-rows/'
     
   Columns("O").EntireColumn.AutoFit
- 
- GreatTotalVolume = GetTotalVolume(lrow)
- MsgBox GreatTotalVolume
  
 End Sub
 
@@ -159,14 +177,23 @@ End Sub
 'Function to calculate Totalvolume'
 ''--------------------------------------------------''
 
-Function GetTotalVolume(lrow As Variant) As Variant
+Private Function GetTotalVolume(lrow) As Variant
   Dim Totalvolume As Variant
-  Totalvolume = 0
+  Dim TickerTotalVolume As String
+  Totalvolume = Cells(2, 12).Value
     
-  For i = 2 To lrow
-    Totalvolume = Totalvolume + cell(i, 12)
+  For i = 3 To lrow
+    If Cells(i, 12).Value > Totalvolume Then
+       Totalvolume = Cells(i, 12).Value
+       TickerTotalVolume = Cells(i, 12).Offset(, 3).Value
+    End If
+       
   Next i
   
   GetTotalVolume = Totalvolume
+  Range("P4").Value = TickerTotalVolume
       
 End Function
+
+
+
