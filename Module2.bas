@@ -6,7 +6,7 @@ Sub RunThroughOneYearStock()
   Dim lastrow As Long
   Dim Openprice As Variant
   Dim Closeprice As Variant
-  Dim TotalVolume As Variant
+  Dim Totalvolume As Variant
   Dim Percentage As Variant
   Dim i As Long
   Dim j As Integer
@@ -29,7 +29,7 @@ Sub RunThroughOneYearStock()
   ticker = ""
   Openprice = 0
   Closeprice = 0
-  TotalVolume = 0
+  Totalvolume = 0
   Percentage = 0
   
   'Use variable j to lop through rows in column I, J , L'
@@ -62,13 +62,13 @@ Sub RunThroughOneYearStock()
            'Format the percentage to have 2 decimals with symbol'
            Percentage = Format(Percentage, "0.00%")
            Cells(j - 1, 11).Value = Percentage
-           Cells(j - 1, 12).Value = TotalVolume
+           Cells(j - 1, 12).Value = Totalvolume
         
         End If
         
         'Find first OpenPrice and stock Volume for each unique tickers'
         Openprice = Cells(i, 3).Value
-        TotalVolume = Cells(i, 7).Value
+        Totalvolume = Cells(i, 7).Value
         
         j = j + 1
         
@@ -77,7 +77,7 @@ Sub RunThroughOneYearStock()
         
         'calculate the Total Volume by adding each correspoing row for ever ticker and get thier close price'
         Closeprice = Cells(i, 6).Value
-        TotalVolume = TotalVolume + Cells(i, 7).Value
+        Totalvolume = Totalvolume + Cells(i, 7).Value
         
       End If
       
@@ -144,4 +144,29 @@ Sub RunThroughOneYearStock()
  Cells(1, 16).Value = "Ticker"
  Cells(1, 17).Value = "Value"
  
+ 'Autofit text on column 'O' '
+ 'reference :- from https://www.automateexcel.com/vba/autofit-columns-rows/'
+    
+  Columns("O").EntireColumn.AutoFit
+ 
+ GreatTotalVolume = GetTotalVolume(lrow)
+ MsgBox GreatTotalVolume
+ 
 End Sub
+
+
+''--------------------------------------------------''
+'Function to calculate Totalvolume'
+''--------------------------------------------------''
+
+Function GetTotalVolume(lrow As Variant) As Variant
+  Dim Totalvolume As Variant
+  Totalvolume = 0
+    
+  For i = 2 To lrow
+    Totalvolume = Totalvolume + cell(i, 12)
+  Next i
+  
+  GetTotalVolume = Totalvolume
+      
+End Function
