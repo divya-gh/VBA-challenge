@@ -48,30 +48,15 @@ Sub RunThroughOneYearStock()
         ticker = Cells(i, 1).Value
         Cells(j, 9).Value = ticker
         
-        'Print the values for yearly change for previous ticker in the row (j-1) and column I'
+    'Call the function to Print on worksheet only for row3 and above'
+        
         If i > 2 Then
-           Cells(j - 1, 10).Value = (Closeprice - Openprice)
-           
-           'To avoid overflow error, make sure close price is not devided by a 0'
-           'Calculate the percentage'
-           If Openprice <> 0 Then
-              Percentage = ((Closeprice / Openprice) - 1)
-              
-           Else
-              Percentage = "N/A"
-           End If
         
-        'Print percentage and total Volume in the column K and row j-1'
-        'Format the percentage to have 2 decimals with symbol'
-           
-           Percentage = Format(Percentage, "0.00%")
-           
-           Cells(j - 1, 11).Value = Percentage
-           Cells(j - 1, 12).Value = Totalvolume
-        
+        Call PrintOnWorksheet(j, Closeprice, Openprice, Percentage, Totalvolume)
+                
         End If
         
-    'Find first OpenPrice and stock Volume for each unique tickers'
+    'Find the first OpenPrice and stock Volume for each unique tickers'
         Openprice = Cells(i, 3).Value
         Totalvolume = Cells(i, 7).Value
         
@@ -88,25 +73,10 @@ Sub RunThroughOneYearStock()
         'Find if the closeprice value is from lastrow'
         If (Cells(lastrow, 6).Value = Closeprice) Then
            
-           'Print in column J'
-           Cells(j - 1, 10).Value = (Closeprice - Openprice)
+        'Call the function to print the last row value'
+           Call PrintOnWorksheet(j, Closeprice, Openprice, Percentage, Totalvolume)
            
-           'To avoid overflow error, make sure close price is not devided by a 0'
-           'Calculate the percentage'
-           If Openprice <> 0 Then
-              Percentage = ((Closeprice / Openprice) - 1)
-              
-           Else
-              Percentage = "N/A"
-           End If
-        
-        'Print percentage and total Volume in the column K and row j-1'
-        'Format the percentage to have 2 decimals with symbol'
            
-           Percentage = Format(Percentage, "0.00%")
-           
-           Cells(j - 1, 11).Value = Percentage
-           Cells(j - 1, 12).Value = Totalvolume
         
         
         End If
@@ -262,6 +232,38 @@ Private Function GetTotalVolume(lrow) As Variant
   Range("P4").Value = TickerTotalVolume
   'MsgBox TickerTotalVolume
       
+End Function
+
+
+''----------------------------------------------------------------------------------''
+'Function to Print Yearly Change, Percent Change and Total Stock Volume on Worksheet'
+''----------------------------------------------------------------------------------''
+
+
+Function PrintOnWorksheet(j As Integer, Closeprice As Variant, Openprice As Variant, Percentage As Variant, Totalvolume As Variant)
+         
+        'Print Yearly Change on Column J for previous ticker'
+           Cells(j - 1, 10).Value = (Closeprice - Openprice)
+           
+        'To avoid overflow error, make sure close price is not devided by a 0'
+        'Calculate the percentage'
+           If Openprice <> 0 Then
+              Percentage = ((Closeprice / Openprice) - 1)
+              
+           Else
+              Percentage = "N/A"
+           End If
+        
+        'Format the percentage to have 2 decimals with symbol'
+           Percentage = Format(Percentage, "0.00%")
+           
+        'Print percentage and Total Volume in the column K & L for previous ticker'
+           
+           Cells(j - 1, 11).Value = Percentage
+           Cells(j - 1, 12).Value = Totalvolume
+
+
+
 End Function
 
 
