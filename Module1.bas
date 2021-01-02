@@ -1,4 +1,4 @@
-Attribute VB_Name = "Module1"
+Attribute VB_Name = "Module11"
 'Create a sub function to loop through the ticker and calculate its corresponding yearly change , percent change and Total stock volume'
 'Calculations used :- 1. yearly change = closeprice -Openprice'
                     '2. Percent change = (closeprice-openprice)/openprice )* 100'
@@ -177,6 +177,22 @@ Sub RunThroughOneYearStock()
  '---------------------------'
     
   Columns("O").EntireColumn.AutoFit
+  
+  
+  ''---------------------------------------------------------------------------------------''
+  'Additional Feature Just for fun!'
+  ''---------------------------------------------------------------------------------------''
+  'Create a table "Growth_Table" for range("O1:Q4")'
+  'Code reference https://www.automateexcel.com/vba/tables-and-listobjects/'
+  ''------------------------------------------------------------------------''
+  
+  
+  If Range("O2").Value = "Greatest % increase" Then
+     ActiveSheet.ListObjects.Add(xlSrcRange, Range("O1:Q4"), , xlYes).Name = "Growth_Table"
+     ActiveSheet.ListObjects("Growth_Table").TableStyle = "TableStyleLight9"
+
+  End If
+    
  
 End Sub
 
