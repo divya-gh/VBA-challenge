@@ -169,11 +169,12 @@ Sub RunThroughOneYearStock()
   Range("Q4").Value = GreatTotalVolume
 
 
- 'Autofit text on column 'O' '
+ 'Autofit text on column O and I through L '
  'reference :- from https://www.automateexcel.com/vba/autofit-columns-rows/'
  '---------------------------'
     
   Columns("O").EntireColumn.AutoFit
+  Columns("I:L").EntireColumn.AutoFit
   
   
   ''---------------------------------------------------------------------------------------''
