@@ -251,7 +251,8 @@ Function PrintOnWorksheet(j As Integer, Closeprice As Variant, Openprice As Vari
               Percentage = ((Closeprice / Openprice) - 1)
               
            Else
-              Percentage = "N/A"
+              'Percentage = "N/A" ; keep percentage = 0 to avoid error while calculating great%increase '
+               Percentage = 0
            End If
         
         'Format the percentage to have 2 decimals with symbol'
