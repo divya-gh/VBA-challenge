@@ -73,7 +73,7 @@ Sub RunThroughOneYearStock()
         'Find if the closeprice value is from lastrow'
         If (Cells(lastrow, 6).Value = Closeprice) Then
            
-        'Call the function to print the last row value'
+     'Call the function to print the last row value'
            Call PrintOnWorksheet(j, Closeprice, Openprice, Percentage, Totalvolume)
            
            
@@ -153,7 +153,7 @@ Sub RunThroughOneYearStock()
  Cells(1, 17).Value = "Value"
  
 
- 'call function to calculate greatest total stock volume'
+ 'Call function to calculate greatest total stock volume'
  '----------------------------------'
  GreatTotalVolume = GetTotalVolume(lrow)
  'MsgBox GreatTotalVolume'
@@ -210,27 +210,27 @@ End Sub
 
 
 ''--------------------------------------------------''
-'Function to calculate Totalvolume'
+'Function to calculate GreatTotalvolume'
 ''--------------------------------------------------''
 
 Private Function GetTotalVolume(lrow) As Variant
   Dim Totalvolume As Variant
-  Dim TickerTotalVolume As String
+  Dim TotalVolumeTIcker As String
   Totalvolume = Cells(2, 12).Value
     
   For i = 3 To lrow
     If Cells(i, 12).Value > Totalvolume Then     'If condition is met, then pass the greater value to Totalvolume'
        Totalvolume = Cells(i, 12).Value
-       TickerTotalVolume = Cells(i, 12).Offset(, -3).Value  'Pass its ticker name to TickerTotalVolume variable'
+       TotalVolumeTIcker = Cells(i, 12).Offset(, -3).Value  'Pass its ticker name to TickerTotalVolume variable'
     End If
        
   Next i
   
-  'Get values to return to main sub and print its ticker name on worksheet'
+  'Return GetTotalVolume to main sub and print its ticker name on worksheet on rangeP4'
   ''------------------------------''
   GetTotalVolume = Totalvolume
-  Range("P4").Value = TickerTotalVolume
-  'MsgBox TickerTotalVolume
+  Range("P4").Value = TotalVolumeTIcker
+  'MsgBox TotalVolumeTIcker
       
 End Function
 
