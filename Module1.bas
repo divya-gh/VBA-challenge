@@ -59,18 +59,19 @@ Sub RunThroughOneYearStock()
               
            Else
               Percentage = 0
-            
-          End If
+           End If
         
-           'Print percentage and total Volume in the column K and row j-1'
-           'Format the percentage to have 2 decimals with symbol'
+        'Print percentage and total Volume in the column K and row j-1'
+        'Format the percentage to have 2 decimals with symbol'
+           
            Percentage = Format(Percentage, "0.00%")
+           
            Cells(j - 1, 11).Value = Percentage
            Cells(j - 1, 12).Value = Totalvolume
         
         End If
         
-        'Find first OpenPrice and stock Volume for each unique tickers'
+    'Find first OpenPrice and stock Volume for each unique tickers'
         Openprice = Cells(i, 3).Value
         Totalvolume = Cells(i, 7).Value
         
@@ -79,11 +80,37 @@ Sub RunThroughOneYearStock()
         
       Else
         
-        'calculate the Total Volume by adding each correspoing row for ever ticker and get thier close price'
+       'Calculate Total Volume and get the last closeprice in the variable'
         Closeprice = Cells(i, 6).Value
         Totalvolume = Totalvolume + Cells(i, 7).Value
         
-      End If
+        
+        'Find if the closeprice value is from lastrow'
+        If (Cells(lastrow, 6).Value = Closeprice) Then
+           
+           'Print in column J'
+           Cells(j - 1, 10).Value = (Closeprice - Openprice)
+           
+           'To avoid overflow error, make sure close price is not devided by a 0'
+           'Calculate the percentage'
+           If Openprice <> 0 Then
+              Percentage = ((Closeprice / Openprice) - 1)
+              
+           Else
+              Percentage = 0
+           End If
+        
+        'Print percentage and total Volume in the column K and row j-1'
+        'Format the percentage to have 2 decimals with symbol'
+           
+           Percentage = Format(Percentage, "0.00%")
+           
+           Cells(j - 1, 11).Value = Percentage
+           Cells(j - 1, 12).Value = Totalvolume
+        
+        
+        End If
+     End If
       
    Next i
    
