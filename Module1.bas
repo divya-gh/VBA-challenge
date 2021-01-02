@@ -1,4 +1,4 @@
-Attribute VB_Name = "Module11"
+Attribute VB_Name = "Module112"
 'Create a sub function to loop through the ticker and calculate its corresponding yearly change , percent change and Total stock volume'
 'Calculations used :- 1. yearly change = closeprice -Openprice'
                     '2. Percent change = (closeprice-openprice)/openprice )* 100'
@@ -43,7 +43,7 @@ Sub RunThroughOneYearStock()
   
   For i = 2 To lastrow
   
-    'Get unique tickers and place them in column I'
+    'Get unique tickers and place them on column I'
      If Cells(i, 1).Value <> ticker Then
         ticker = Cells(i, 1).Value
         Cells(j, 9).Value = ticker
@@ -58,7 +58,7 @@ Sub RunThroughOneYearStock()
               Percentage = ((Closeprice / Openprice) - 1)
               
            Else
-              Percentage = 0
+              Percentage = "N/A"
            End If
         
         'Print percentage and total Volume in the column K and row j-1'
@@ -97,7 +97,7 @@ Sub RunThroughOneYearStock()
               Percentage = ((Closeprice / Openprice) - 1)
               
            Else
-              Percentage = 0
+              Percentage = "N/A"
            End If
         
         'Print percentage and total Volume in the column K and row j-1'
@@ -212,13 +212,28 @@ Sub RunThroughOneYearStock()
   'Create a table "Growth_Table" for range("O1:Q4")'
   'Code reference https://www.automateexcel.com/vba/tables-and-listobjects/'
   ''------------------------------------------------------------------------''
+  Dim tablename As String
+  Dim TableExists As Boolean
   
+  'tablename = "Growth_Table"
   
-  If Range("O2").Value = "Greatest % increase" Then
-     ActiveSheet.ListObjects.Add(xlSrcRange, Range("O1:Q4"), , xlYes).Name = "Growth_Table"
-     ActiveSheet.ListObjects("Growth_Table").TableStyle = "TableStyleLight9"
-
-  End If
+  TableExists = False
+On Error GoTo Skip
+If ActiveSheet.ListObjects("Growth_Table").Name = "Growth_Table" Then
+TableExists = True
+End If
+Skip:
+    On Error GoTo 0
+     
+     If Not TableExists And (Range("O2").Value = "Greatest % increase") Then
+     
+        ActiveSheet.ListObjects.Add(xlSrcRange, Range("O1:Q4"), , xlYes).Name = "Growth_Table"
+        ActiveSheet.ListObjects("Growth_Table").TableStyle = "TableStyleLight9"
+     
+     Else
+       Exit Sub
+     
+     End If
     
  
 End Sub
