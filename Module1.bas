@@ -121,12 +121,12 @@ Sub RunThroughOneYearStock()
   
   'Inerate with for loop to compare'
   For Each cell In Range("K3:K" & lrow)
-    If (cell.Value > GreatIncrease) Then
+    If IsNumeric(cell.Value) And (cell.Value > GreatIncrease) Then
        
        GreatIncrease = cell.Value
        TickerIncrease = cell.Offset(, -2).Value
        
-    ElseIf (cell.Value < GreatDecrease) Then
+    ElseIf IsNumeric(cell.Value) And (cell.Value < GreatDecrease) Then
        GreatDecrease = cell.Value
        TickerDecrease = cell.Offset(, -2).Value
        
@@ -169,12 +169,11 @@ Sub RunThroughOneYearStock()
   Range("Q4").Value = GreatTotalVolume
 
 
- 'Autofit text on column O and I through L '
+ 'Autofit text on column 'O' '
  'reference :- from https://www.automateexcel.com/vba/autofit-columns-rows/'
  '---------------------------'
     
   Columns("O").EntireColumn.AutoFit
-  Columns("I:L").EntireColumn.AutoFit
   
   
   ''---------------------------------------------------------------------------------------''
@@ -220,9 +219,12 @@ Private Function GetTotalVolume(lrow) As Variant
   Totalvolume = Cells(2, 12).Value
     
   For i = 3 To lrow
-    If Cells(i, 12).Value > Totalvolume Then     'If condition is met, then pass the greater value to Totalvolume'
+  
+  'If condition is met, then pass the greater value to Totalvolume'
+    If (Cells(i, 12).Value > Totalvolume) Then
        Totalvolume = Cells(i, 12).Value
        TotalVolumeTIcker = Cells(i, 12).Offset(, -3).Value  'Pass its ticker name to TickerTotalVolume variable'
+    
     End If
        
   Next i
@@ -252,8 +254,8 @@ Function PrintOnWorksheet(j As Integer, Closeprice As Variant, Openprice As Vari
               Percentage = ((Closeprice / Openprice) - 1)
               
            Else
-              'Percentage = "N/A" ; keep percentage = 0 to avoid error while calculating great%increase '
-               Percentage = 0
+              'If Open price is 0 then Percentage is NA '
+               Percentage = "N/A"
            End If
         
         'Format the percentage to have 2 decimals with symbol'
