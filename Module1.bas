@@ -184,9 +184,35 @@ Sub RunThroughOneYearStock()
         
       Columns("I:O").EntireColumn.AutoFit
       
-    
+      
+      
+     ''---------------------------------------------------------------------------------------''
+  'Additional Feature Just for fun!'
+  ''---------------------------------------------------------------------------------------''
+  'Create a table "Growth_Table" for range("O1:Q4")'
+  'Thanks to my statckoverflow friends!  I could modify the code and fit in here !
+  ''------------------------------------------------------------------------''
+  Dim tblName As String
+  Dim TableExists As Boolean
+  Dim tbl As ListObject
+  
+  tblName = "Growth_Table"
+  
+   Set tbl = Nothing
+        On Error Resume Next
+        Set tbl = ws.ListObjects(tblName)
+        On Error GoTo 0
+     
+        'Create table.
+        If tbl Is Nothing Then 'Table does not exist
+            Set tbl = ws.ListObjects.Add(xlSrcRange, _
+                ws.Range("O1:Q4"), , xlYes)
+            tbl.Name = tblName
+            tbl.TableStyle = "TableStyleLight9"
+        'Else 'Table already exists
+        End If
          
-         
+   'go to next sheet
    Next ws
    st.Activate
  
